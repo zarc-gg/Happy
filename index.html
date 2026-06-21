@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Minha Birthday V3</title>
+<style>
+body{margin:0;background:#000;color:#fff;font-family:Arial,sans-serif;overflow:hidden}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px}
+.hidden{display:none}
+h1{font-size:3rem;text-shadow:0 0 20px #ff4fa3}
+button{padding:14px 28px;border:none;border-radius:40px;background:#ff4fa3;color:#fff;font-size:18px;box-shadow:0 0 20px #ff4fa3;cursor:pointer}
+.star,.heart,.spark{position:fixed;pointer-events:none}
+.polaroid{background:#fff;color:#000;padding:10px 10px 50px;border-radius:8px;box-shadow:0 0 30px rgba(255,255,255,.6)}
+.polaroid img{width:260px;height:360px;object-fit:cover}
+#message{max-width:700px;white-space:pre-wrap;font-size:1.2rem;line-height:1.7}
+.heartFinal{font-size:120px;animation:pulse 1.5s infinite}
+@keyframes pulse{50%{transform:scale(1.1)}}
+</style>
+</head>
+<body>
+
+<div id="a" class="screen">
+<h1>Hey Minha... 💖</h1>
+<p>I made something special for you...</p>
+<p>Ready?</p>
+<button onclick="begin()">Touch Here ❤️</button>
+</div>
+
+<div id="b" class="screen hidden">
+<h1>🎂 HAPPY BIRTHDAY MINHA 💕</h1>
+<div class="polaroid">
+<img id="photo" src="photo1.jpg">
+<div id="caption">The smile I never get tired of ❤️</div>
+</div><br>
+<button onclick="gift()">Continue ➜</button>
+</div>
+
+<div id="c" class="screen hidden">
+<h1>🎁 Open Your Gift</h1>
+<button id="run">Open Your Gift 🎁</button>
+</div>
+
+<div id="d" class="screen hidden">
+<div id="message"></div>
+</div>
+
+<div id="e" class="screen hidden">
+<div class="heartFinal">💖</div>
+<h1>I LOVE YOU ❤️</h1>
+<p>Made Especially For Minha<br>By Badish ❤️</p>
+</div>
+
+<audio id="music" loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+for(let i=0;i<150;i++){
+ let s=document.createElement('div');
+ s.className='star';
+ s.innerHTML='✦';
+ s.style.left=Math.random()*100+'vw';
+ s.style.top=Math.random()*100+'vh';
+ document.body.appendChild(s);
+}
+
+function burst(){
+ for(let i=0;i<80;i++){
+  let h=document.createElement('div');
+  h.className='heart';
+  h.innerHTML=Math.random()>0.5?'💖':'✨';
+  h.style.left=Math.random()*100+'vw';
+  h.style.top='100vh';
+  document.body.appendChild(h);
+  let y=100;
+  let t=setInterval(()=>{
+   y-=2;
+   h.style.top=y+'vh';
+   if(y<-10){clearInterval(t);h.remove();}
+  },25);
+ }
+}
+
+function begin(){
+ a.classList.add('hidden');
+ setTimeout(()=>{
+  b.classList.remove('hidden');
+  burst();
+  document.getElementById('music').play().catch(()=>{});
+ },1000);
+}
+
+const photos=['photo1.jpg','photo2.jpg','photo3.jpg'];
+const caps=[
+'The smile I never get tired of ❤️',
+'My favorite person ✨',
+'The prettiest birthday girl 👑'
+];
+let i=0;
+setInterval(()=>{
+ if(b.classList.contains('hidden')) return;
+ i=(i+1)%3;
+ photo.src=photos[i];
+ caption.innerText=caps[i];
+},2500);
+
+function gift(){
+ b.classList.add('hidden');
+ c.classList.remove('hidden');
+}
+
+let tries=0;
+run.onclick=()=>{
+ tries++;
+ if(tries<3){
+   run.style.position='absolute';
+   run.style.left=Math.random()*80+'vw';
+   run.style.top=Math.random()*80+'vh';
+ }else{
+   c.classList.add('hidden');
+   d.classList.remove('hidden');
+   typeWriter();
+ }
+};
+
+const msg=`Minha...
+
+Out of all the people in the world,
+I am lucky that I met you.
+
+You make ordinary days special.
+
+Your smile makes me smile.
+
+Your happiness matters to me.
+
+And honestly...
+
+I can't imagine this year without you. ❤️
+
+Happy Birthday, Princess 👑✨
+
+Love,
+Badish ❤️`;
+
+function typeWriter(){
+ let n=0;
+ let el=document.getElementById('message');
+ let t=setInterval(()=>{
+   el.textContent+=msg[n++]||'';
+   if(n>=msg.length){
+      clearInterval(t);
+      setTimeout(()=>{
+        d.classList.add('hidden');
+        e.classList.remove('hidden');
+        setInterval(burst,2500);
+      },3000);
+   }
+ },35);
+}
+</script>
+</body>
+</html>
